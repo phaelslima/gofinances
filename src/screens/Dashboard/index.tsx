@@ -49,12 +49,8 @@ export function Dashboard() {
 
   const theme = useTheme()
 
-  function getLastTransactionDate(
-    collection:DataListProps[],
-    type:'positive'|'negative'
-  ) {
-    const lastTransaction = 
-    Math.max.apply(Math, collection
+  function getLastTransactionDate(collection: DataListProps[], type: 'positive'|'negative') {
+    const lastTransaction = Math.max(0, ...collection
       .filter(transaction => transaction.type === type)
       .map(transaction => new Date(transaction.date).getTime()))
 
@@ -64,10 +60,8 @@ export function Dashboard() {
     }).format(new Date(lastTransaction));
   }
 
-  function getTotalIntervalTransactionDate(
-    collection : DataListProps[],
-  ){
-    const lastTransaction = new Date(Math.max.apply(Math, collection
+  function getTotalIntervalTransactionDate(collection : DataListProps[]) {
+    const lastTransaction = new Date(Math.max(0, ...collection
     .map(transaction => new Date(transaction.date).getTime())));
 
     const lastTransactionFormmated = Intl.DateTimeFormat('pt-BR', {
@@ -75,7 +69,7 @@ export function Dashboard() {
       month: 'short',
     }).format(lastTransaction);
 
-    const firstTransaction = new Date(Math.min.apply(Math, collection
+    const firstTransaction = new Date(Math.min(0, ...collection
     .map(transaction => new Date(transaction.date).getTime())));
 
     const firstTransactionFormmated = Intl.DateTimeFormat('pt-BR', {
@@ -90,7 +84,6 @@ export function Dashboard() {
       ? `${firstTransactionFormmated} ~ ${lastTransactionFormmated}`
       : `${firstTransactionFormmated}. ${firstTransactionYear} ~ ${lastTransactionFormmated}. ${lastTransactionYear}`;
   }
-    
 
   async function loadTransactions(){
     const dataKey = '@gofinances:transactions';
