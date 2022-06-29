@@ -1,10 +1,10 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { ActivityIndicator } from "react-native";
+import { ActivityIndicator, TouchableOpacity } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import { useTheme } from "styled-components";
-
 import { useFocusEffect } from "@react-navigation/native";
+import { useAuth } from "../../hooks/auth";
 
 import { HighlightCard } from "../../components/HighlightCard";
 import { TransactionCard, TransactionCardProps } from "../../components/TransactionCard";
@@ -25,7 +25,6 @@ import {
   TransactionList,
   LoadContainer,
 } from "./styles";
-
 
 interface HighlightProps {
   amount: string;
@@ -48,6 +47,8 @@ export function Dashboard() {
   const [highlightData, setHighlightData] = useState<HighlightData>({} as HighlightData)
 
   const theme = useTheme()
+
+  const { signOut } = useAuth()
 
   function getLastTransactionDate(collection: DataListProps[], type: 'positive'|'negative') {
     const lastTransaction = Math.max(0, ...collection
@@ -166,7 +167,9 @@ export function Dashboard() {
                 </User>
               </UserInfo>
 
-              <Icon name="power" />
+              <TouchableOpacity onPress={signOut}>
+                <Icon name="power" />
+              </TouchableOpacity>
             </UserWrapper>
           </Header>
 
