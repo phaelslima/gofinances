@@ -26,9 +26,11 @@ import {
   Fields,
   TransactionTypes,
 } from "./styles";
+
 import { BottomTabNavigationProp } from "@react-navigation/bottom-tabs";
 import { AppRoutesParamList } from "../../routes/app.routes";
 
+import { useAuth } from "../../hooks/auth";
 
 interface FormData {
   [name: string]: string;
@@ -54,7 +56,9 @@ export function Register() {
   const [transactionType, setTransactionType] = useState('')
   const [categoryModalOpen, setCategoryModalOpen] = useState(false)
 
-  const dataKey = '@gofinances:transactions';
+  const { user } = useAuth()
+
+  const dataKey = `@gofinances:transactions_user:${user.id}`;
 
   const [category, setCategory] = useState({
     key: 'category',
