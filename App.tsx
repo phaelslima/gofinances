@@ -4,6 +4,7 @@ import 'intl/locale-data/jsonp/pt-BR';
 import React from 'react';
 import { StatusBar } from 'react-native';
 import AppLoading from 'expo-app-loading';
+
 import { ThemeProvider } from 'styled-components';
 
 import {
@@ -15,10 +16,8 @@ import {
 
 import theme from './src/global/styles/theme';
 
-import { NavigationContainer } from "@react-navigation/native";
-import { AppRoutes } from './src/routes/app.routes';
-import { SignIn } from './src/screens/SignIn';
-import { AuthProvider } from './src/hooks/auth';
+import { AuthProvider, useAuth } from './src/hooks/auth';
+
 import { Routes } from './src/routes';
 
 export default function App() {
@@ -27,8 +26,10 @@ export default function App() {
     Poppins_500Medium,
     Poppins_700Bold
   });
+
+  const { userStoragedLoading } = useAuth()
   
-  if (!fontsLoaded) return <AppLoading />
+  if (!fontsLoaded || userStoragedLoading) return <AppLoading />
 
   return (
     <ThemeProvider theme={theme}>

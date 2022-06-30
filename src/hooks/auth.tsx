@@ -24,6 +24,7 @@ interface IAuthContextData {
   signInWithGoogle: () => Promise<void>;
   signInWithApple: () => Promise<void>;
   signOut: () => Promise<void>;
+  userStoragedLoading: boolean;
 }
 
 interface AuthorizationResponse {
@@ -72,7 +73,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
         const userLogged = {
           id: userInfo.id,
-          name: userInfo.give_name,
+          name: userInfo.given_name,
           email: userInfo.email,
           photo: userInfo.picture
         }
@@ -96,10 +97,14 @@ export function AuthProvider({ children }: AuthProviderProps) {
       })
 
       if (credential) {
+        const name = credential.fullName!.givenName!
+        const photo = `https://ui-avatars.com/api/?name=${name}&length=1`
+
         const userLogged = {
           id: String(credential.user),
-          name: credential.fullName!.givenName!,
-          email: credential.email!
+          name,
+          email: credential.email!,
+          photo,
         }
 
         setUser(userLogged)
@@ -118,7 +123,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
   }
 
   return (
-    <AuthContext.Provider value={{ user, signInWithGoogle, signInWithApple, signOut }}>
+    <AuthContext.Provider value={{ user, signInWithGoogle, signInWithApple, signOut, userStoragedLoading }}>
       {children}
     </AuthContext.Provider>
   )
