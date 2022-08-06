@@ -58,8 +58,6 @@ export function Register() {
 
   const { user } = useAuth()
 
-  const dataKey = `@gofinances:transactions_user:${user.id}`;
-
   const [category, setCategory] = useState({
     key: 'category',
     name: 'Categoria',
@@ -102,6 +100,7 @@ export function Register() {
     }
 
     try {
+      const dataKey = `@gofinances:transactions_user:${user.id}`;
       const data = await AsyncStorage.getItem(dataKey);
       const currentData = data ? JSON.parse(data) : [];
       
@@ -123,7 +122,6 @@ export function Register() {
 
 
     } catch(error) {
-      console.log(error);
       Alert.alert("Não foi possivel salvar");
     }
   }
@@ -171,6 +169,7 @@ export function Register() {
             </TransactionTypes>
 
             <CategorySelectButton
+              testID="button-category"
               title={category.name}
               onPress={handleOpenSelectCategoryModal}
             />
@@ -182,7 +181,7 @@ export function Register() {
           />
         </Form>
 
-        <Modal visible={categoryModalOpen} statusBarTranslucent>
+        <Modal testID="modal-category" visible={categoryModalOpen} statusBarTranslucent>
           <CategorySelect
             category={category}
             setCategory={setCategory}
